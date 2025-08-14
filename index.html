@@ -1,0 +1,2256 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tripzy - Explore the World</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            animation: {
+              "fade-in": "fadeIn 1s ease-out",
+              "slide-up": "slideUp 0.6s ease-out",
+              "zoom-in": "zoomIn 0.5s ease-out",
+            },
+            keyframes: {
+              fadeIn: {
+                "0%": { opacity: "0", transform: "translateY(30px)" },
+                "100%": { opacity: "1", transform: "translateY(0)" },
+              },
+              slideUp: {
+                "0%": { opacity: "0", transform: "translateY(20px)" },
+                "100%": { opacity: "1", transform: "translateY(0)" },
+              },
+              zoomIn: {
+                "0%": { opacity: "0", transform: "scale(0.95)" },
+                "100%": { opacity: "1", transform: "scale(1)" },
+              },
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      html {
+        scroll-behavior: smooth;
+      }
+      .parallax {
+        transform: translateZ(0);
+        will-change: transform;
+      }
+      .backdrop-blur-custom {
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+      }
+    </style>
+  </head>
+  <body class="font-sans">
+    <div class="min-h-screen bg-white overflow-x-hidden">
+      <!-- Header -->
+      <header class="fixed top-0 w-full bg-black/10 backdrop-blur-lg z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="flex justify-between items-center h-16">
+            <div class="flex items-center">
+              <a
+                href="#"
+                class="text-2xl font-bold text-white hover:text-blue-200 transition-colors drop-shadow-lg"
+              >
+                Tr<span class="text-red-500">i</span>pzy
+              </a>
+            </div>
+
+            <nav class="hidden md:flex space-x-8">
+              <a
+                href="#"
+                class="text-white/90 hover:text-white transition-colors drop-shadow"
+                >Flights</a
+              >
+              <a
+                href="#"
+                class="text-white/90 hover:text-white transition-colors drop-shadow"
+                >Hotels</a
+              >
+              <a
+                href="#"
+                class="text-white/90 hover:text-white transition-colors drop-shadow"
+                >Holidays</a
+              >
+              <a
+                href="#"
+                class="text-white/90 hover:text-white transition-colors drop-shadow"
+                >Trains</a
+              >
+              <a
+                href="#"
+                class="text-white/90 hover:text-white transition-colors drop-shadow"
+                >Bus</a
+              >
+              <a
+                href="#"
+                class="text-white/90 hover:text-white transition-colors drop-shadow"
+                >Cars</a
+              >
+            </nav>
+
+            <div class="flex space-x-4 pt-2">
+              <a href="login.html">
+                <button
+                  class="bg-white/10 backdrop-blur-md px-4 py-2 rounded-lg border border-white/20 text-white hover:bg-white/20 transition-colors duration-300"
+                >
+                  Login
+                </button>
+              </a>
+
+              <a href="signup.html">
+                <button
+                  class="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors duration-300"
+                >
+                  Sign Up
+                </button>
+              </a>
+            </div>
+
+            <button class="md:hidden text-white" onclick="toggleMobileMenu()">
+              <svg
+                id="menu-icon"
+                class="h-6 w-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                ></path>
+              </svg>
+              <svg
+                id="close-icon"
+                class="h-6 w-6 hidden"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                ></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div
+          id="mobile-menu"
+          class="md:hidden bg-white/90 backdrop-blur-lg border-t border-white/20 hidden"
+        >
+          <div class="px-4 py-2 space-y-2">
+            <a href="#" class="block text-gray-700 hover:text-blue-600 py-2"
+              >Flights</a
+            >
+            <a href="#" class="block text-gray-700 hover:text-blue-600 py-2"
+              >Hotels</a
+            >
+            <a href="#" class="block text-gray-700 hover:text-blue-600 py-2"
+              >Holidays</a
+            >
+            <a href="#" class="block text-gray-700 hover:text-blue-600 py-2"
+              >Trains</a
+            >
+            <a href="#" class="block text-gray-700 hover:text-blue-600 py-2"
+              >Bus</a
+            >
+            <a href="#" class="block text-gray-700 hover:text-blue-600 py-2"
+              >Cars</a
+            >
+            <div class="flex space-x-4 pt-2">
+              <!-- Login Icon Button -->
+              <a
+                href="login.html"
+                class="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:text-blue-600 hover:border-blue-600 transition"
+              >
+                <i class="fas fa-sign-in-alt"></i>
+                <span class="hidden sm:inline">Login</span>
+              </a>
+
+              <!-- Sign Up Icon Button -->
+              <a
+                href="signup.html"
+                class="flex items-center gap-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition"
+              >
+                <i class="fas fa-user-plus"></i>
+                <span class="hidden sm:inline">Sign Up</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Hero Section with Parallax -->
+      <section
+        class="relative h-screen flex items-center justify-center overflow-hidden"
+      >
+        <div
+          id="hero-bg"
+          class="absolute inset-0 z-0 parallax"
+          style="
+            background-image: url('https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=3840&h=2160&fit=crop&auto=format&q=90');
+            background-size: cover;
+            background-position: center;
+          "
+        >
+          <div
+            class="absolute inset-0 bg-gradient-to-b from-black/30 via-black/40 to-black/50"
+          ></div>
+        </div>
+
+        <div
+          class="relative z-10 text-center text-white max-w-4xl mx-auto px-4"
+        >
+          <h1 class="text-6xl md:text-8xl font-bold mb-6 animate-fade-in">
+            Explore the World
+          </h1>
+          <p class="text-xl md:text-3xl mb-8 opacity-90 animate-slide-up">
+            Book flights, hotels, and holiday packages at the best prices with
+            Tripzy
+          </p>
+          <div class="flex flex-wrap justify-center gap-4 mt-8 animate-zoom-in">
+            <div
+              class="bg-white/10 backdrop-blur-md px-6 py-3 rounded-full border border-white/20"
+            >
+              <span class="text-lg font-semibold">✈️ 500+ Airlines</span>
+            </div>
+            <div
+              class="bg-white/10 backdrop-blur-md px-6 py-3 rounded-full border border-white/20"
+            >
+              <span class="text-lg font-semibold">🏨 100K+ Hotels</span>
+            </div>
+            <div
+              class="bg-white/10 backdrop-blur-md px-6 py-3 rounded-full border border-white/20"
+            >
+              <span class="text-lg font-semibold">🌍 200+ Countries</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Search Widget -->
+      <section class="relative -mt-32 z-20 max-w-6xl mx-auto px-4">
+        <div
+          class="bg-white rounded-3xl shadow-2xl p-8 md:p-10 border border-gray-100"
+        >
+          <!-- Tabs -->
+          <div class="flex flex-wrap gap-2 mb-8">
+            <button
+              onclick="setActiveTab('flights')"
+              class="tab-btn px-8 py-4 rounded-full font-medium transition-all flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg transform scale-105"
+            >
+              <svg
+                class="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                ></path>
+              </svg>
+              Flights
+            </button>
+            <button
+              onclick="setActiveTab('hotels')"
+              class="tab-btn px-8 py-4 rounded-full font-medium transition-all flex items-center gap-2 bg-gray-50 text-gray-700 hover:bg-gray-100 hover:scale-105"
+            >
+              <svg
+                class="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                ></path>
+              </svg>
+              Hotels
+            </button>
+            <button
+              onclick="setActiveTab('holidays')"
+              class="tab-btn px-8 py-4 rounded-full font-medium transition-all flex items-center gap-2 bg-gray-50 text-gray-700 hover:bg-gray-100 hover:scale-105"
+            >
+              <svg
+                class="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
+                ></path>
+              </svg>
+              Holidays
+            </button>
+            <button
+              onclick="setActiveTab('trains')"
+              class="tab-btn px-8 py-4 rounded-full font-medium transition-all flex items-center gap-2 bg-gray-50 text-gray-700 hover:bg-gray-100 hover:scale-105"
+            >
+              <svg
+                class="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
+                ></path>
+              </svg>
+              Trains
+            </button>
+          </div>
+
+          <!-- Flight Search Form -->
+          <div id="flights-form" class="tab-content">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+              <div class="space-y-2 relative">
+                <label class="text-sm font-semibold text-gray-700">From</label>
+                <div class="relative">
+                  <svg
+                    class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                    ></path>
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                    ></path>
+                  </svg>
+                  <input
+                    type="text"
+                    id="from-input"
+                    placeholder="Departure City"
+                    class="w-full pl-10 pr-4 py-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    oninput="handleSearch(this.value)"
+                  />
+                </div>
+
+                <!-- Live Search Results -->
+                <div
+                  id="search-results"
+                  class="absolute top-full left-0 right-0 bg-white border-2 border-gray-200 rounded-xl shadow-xl z-30 max-h-64 overflow-y-auto hidden"
+                ></div>
+              </div>
+
+              <div class="space-y-2">
+                <label class="text-sm font-semibold text-gray-700">To</label>
+                <div class="relative">
+                  <svg
+                    class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                    ></path>
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                    ></path>
+                  </svg>
+                  <input
+                    type="text"
+                    placeholder="Destination City"
+                    class="w-full pl-10 pr-4 py-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  />
+                </div>
+              </div>
+
+              <div class="space-y-2">
+                <label class="text-sm font-semibold text-gray-700"
+                  >Departure</label
+                >
+                <div class="relative">
+                  <svg
+                    class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                    ></path>
+                  </svg>
+                  <input
+                    type="date"
+                    class="w-full pl-10 pr-4 py-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  />
+                </div>
+              </div>
+
+              <div class="space-y-2">
+                <label class="text-sm font-semibold text-gray-700"
+                  >Travelers</label
+                >
+                <div class="relative">
+                  <select
+                    class="w-full pl-10 pr-4 py-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  >
+                    <option>1 Adult</option>
+                    <option>2 Adults</option>
+                    <option>3 Adults</option>
+                    <option>4+ Adults</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hotel Search Form -->
+          <div id="hotels-form" class="tab-content hidden">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+              <div class="space-y-2">
+                <label class="text-sm font-semibold text-gray-700">City</label>
+                <div class="relative">
+                  <svg
+                    class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                    ></path>
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                    ></path>
+                  </svg>
+                  <input
+                    type="text"
+                    placeholder="Enter city name"
+                    class="w-full pl-10 pr-4 py-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  />
+                </div>
+              </div>
+
+              <div class="space-y-2">
+                <label class="text-sm font-semibold text-gray-700"
+                  >Check-in</label
+                >
+                <div class="relative">
+                  <svg
+                    class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                    ></path>
+                  </svg>
+                  <input
+                    type="date"
+                    class="w-full pl-10 pr-4 py-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  />
+                </div>
+              </div>
+
+              <div class="space-y-2">
+                <label class="text-sm font-semibold text-gray-700"
+                  >Check-out</label
+                >
+                <div class="relative">
+                  <svg
+                    class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                    ></path>
+                  </svg>
+                  <input
+                    type="date"
+                    class="w-full pl-10 pr-4 py-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  />
+                </div>
+              </div>
+
+              <div class="space-y-2">
+                <label class="text-sm font-semibold text-gray-700"
+                  >Guests</label
+                >
+                <div class="relative">
+                  <select
+                    class="w-full pl-10 pr-4 py-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  >
+                    <option>1 Guest</option>
+                    <option>2 Guests</option>
+                    <option>3 Guests</option>
+                    <option>4+ Guests</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button
+            onclick="handleBookingSearch()"
+            class="w-full md:w-auto bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold py-5 px-10 rounded-xl mt-8 transition-all transform hover:scale-105 flex items-center justify-center gap-3 shadow-lg"
+          >
+            <svg
+              class="h-6 w-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              ></path>
+            </svg>
+            Search Best Deals
+          </button>
+        </div>
+      </section>
+
+      <!-- Booking Results -->
+      <section id="booking-results" class="py-20 bg-gray-50 hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <!-- Flight Results -->
+          <div id="flight-results" class="mb-16">
+            <h2 class="text-3xl font-bold text-gray-900 mb-8">
+              Available Flights
+            </h2>
+            <div class="space-y-4">
+              <div
+                class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow"
+              >
+                <div
+                  class="flex flex-col md:flex-row justify-between items-start md:items-center"
+                >
+                  <div class="flex-1">
+                    <div class="flex items-center gap-4 mb-2">
+                      <div class="text-lg font-bold text-blue-600">
+                        Qtar Airways
+                      </div>
+                      <div class="text-sm text-gray-500">AI 131</div>
+                    </div>
+                    <div class="flex items-center gap-8">
+                      <div class="text-center">
+                        <div class="text-2xl font-bold text-gray-900">
+                          09:20/ 14:30
+                        </div>
+                        <div class="text-sm text-gray-500">Departure</div>
+                      </div>
+                      <div class="flex-1 text-center">
+                        <div class="text-sm text-gray-500">3h 15m</div>
+                        <div class="w-full h-px bg-gray-300 my-1"></div>
+                        <div class="text-sm text-gray-500">Mumbai → Dubai</div>
+                      </div>
+                      <div class="text-center">
+                        <div class="text-2xl font-bold text-gray-900">
+                          12:35/ 17:45
+                        </div>
+                        <div class="text-sm text-gray-500">Arrival</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mt-4 md:mt-0 text-right">
+                    <div class="text-3xl font-bold text-orange-600 mb-2">
+                      ₹45,000
+                    </div>
+                    <button
+                      onclick="bookExternal('flight')"
+                      class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+                    >
+                      Book Now
+                      <svg
+                        class="h-4 w-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-1M14 8l4-4m0 0h-3m3 0v3"
+                        ></path>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow"
+              >
+                <div
+                  class="flex flex-col md:flex-row justify-between items-start md:items-center"
+                >
+                  <div class="flex-1">
+                    <div class="flex items-center gap-4 mb-2">
+                      <div class="text-lg font-bold text-blue-600">
+                        Emirates
+                      </div>
+                      <div class="text-sm text-gray-500">5E 225</div>
+                    </div>
+                    <div class="flex items-center gap-8">
+                      <div class="text-center">
+                        <div class="text-2xl font-bold text-gray-900">
+                          2.30/ 8.40
+                        </div>
+                        <div class="text-sm text-gray-500">Departure</div>
+                      </div>
+                      <div class="flex-1 text-center">
+                        <div class="text-sm text-gray-500">10h 10m</div>
+                        <div class="w-full h-px bg-gray-300 my-1"></div>
+                        <div class="text-sm text-gray-500">
+                          Mumbai → New York
+                        </div>
+                      </div>
+                      <div class="text-center">
+                        <div class="text-2xl font-bold text-gray-900">
+                          11.40/ 18:50
+                        </div>
+                        <div class="text-sm text-gray-500">Arrival</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mt-4 md:mt-0 text-right">
+                    <div class="text-3xl font-bold text-orange-600 mb-2">
+                      ₹72,200
+                    </div>
+                    <button
+                      onclick="bookExternal('flight')"
+                      class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+                    >
+                      Book Now
+                      <svg
+                        class="h-4 w-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-1M14 8l4-4m0 0h-3m3 0v3"
+                        ></path>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hotel Results -->
+          <div id="hotel-results" class="mb-16 hidden">
+            <h2 class="text-3xl font-bold text-gray-900 mb-8">
+              Available Hotels
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div
+                class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow"
+              >
+                <img
+                  src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=400&h=300&fit=crop&auto=format&q=90"
+                  alt="The Imperial Delhi"
+                  class="w-full h-48 object-cover"
+                />
+                <div class="p-6">
+                  <div class="flex justify-between items-start mb-4">
+                    <h3 class="text-xl font-bold text-gray-900">
+                      The Imperial Delhi
+                    </h3>
+                    <div class="flex items-center gap-1">
+                      <svg
+                        class="h-4 w-4 text-yellow-400 fill-current"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                        ></path>
+                      </svg>
+                      <span class="text-sm text-gray-600">4.8</span>
+                    </div>
+                  </div>
+                  <div class="flex flex-wrap gap-2 mb-4">
+                    <span
+                      class="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full"
+                      >WiFi</span
+                    >
+                    <span
+                      class="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full"
+                      >Pool</span
+                    >
+                    <span
+                      class="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full"
+                      >Spa</span
+                    >
+                    <span
+                      class="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full"
+                      >Restaurant</span
+                    >
+                  </div>
+                  <div class="flex justify-between items-center">
+                    <div>
+                      <span class="text-2xl font-bold text-orange-600"
+                        >₹18,500</span
+                      >
+                      <span class="text-gray-500 ml-1">/ night</span>
+                    </div>
+                    <button
+                      onclick="bookExternal('hotel')"
+                      class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+                    >
+                      Book Now
+                      <svg
+                        class="h-4 w-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-1M14 8l4-4m0 0h-3m3 0v3"
+                        ></path>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Holiday Packages -->
+          <div id="holiday-results" class="mb-16 hidden">
+            <h2 class="text-3xl font-bold text-gray-900 mb-8">
+              Holiday Packages
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div
+                class="bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
+              >
+                <img
+                  src="https://images.unsplash.com/photo-1573843981267-be1999ff37cd?w=3840&h=2160&fit=crop&crop=center&auto=format&q=90"
+                  alt="Romantic Maldives Escape"
+                  class="w-full h-64 object-cover"
+                />
+                <div class="p-8">
+                  <div class="flex justify-between items-start mb-4">
+                    <h3 class="text-2xl font-bold text-gray-900">
+                      Romantic Maldives Escape
+                    </h3>
+                    <div class="flex items-center gap-1">
+                      <svg
+                        class="h-4 w-4 text-yellow-400 fill-current"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                        ></path>
+                      </svg>
+                      <span class="text-sm text-gray-600">4.9</span>
+                    </div>
+                  </div>
+                  <div class="text-lg text-blue-600 font-semibold mb-4">
+                    5 Days 4 Nights
+                  </div>
+                  <div class="mb-6">
+                    <h4 class="font-semibold text-gray-900 mb-2">
+                      Package Includes:
+                    </h4>
+                    <ul class="text-sm text-gray-600 space-y-1">
+                      <li class="flex items-center gap-2">
+                        <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                        Flights
+                      </li>
+                      <li class="flex items-center gap-2">
+                        <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                        Resort Stay
+                      </li>
+                      <li class="flex items-center gap-2">
+                        <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                        All Meals
+                      </li>
+                      <li class="flex items-center gap-2">
+                        <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                        Water Sports
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="flex justify-between items-center">
+                    <div>
+                      <span class="text-3xl font-bold text-orange-600"
+                        >₹85,999</span
+                      >
+                      <span class="text-gray-500 ml-1">/ person</span>
+                    </div>
+                    <button
+                      onclick="bookHoliday(1)"
+                      class="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-3 rounded-xl hover:from-purple-700 hover:to-blue-700 transition-all transform hover:scale-105"
+                    >
+                      Book Now
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Stats Section -->
+      <section class="py-20 bg-gradient-to-br from-blue-50 to-indigo-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div class="text-center">
+              <div class="text-4xl md:text-5xl font-bold text-blue-600 mb-2">
+                10M+
+              </div>
+              <div class="text-gray-600 font-medium">Happy Travelers</div>
+            </div>
+            <div class="text-center">
+              <div class="text-4xl md:text-5xl font-bold text-orange-600 mb-2">
+                500+
+              </div>
+              <div class="text-gray-600 font-medium">Airlines</div>
+            </div>
+            <div class="text-center">
+              <div class="text-4xl md:text-5xl font-bold text-green-600 mb-2">
+                100K+
+              </div>
+              <div class="text-gray-600 font-medium">Hotels</div>
+            </div>
+            <div class="text-center">
+              <div class="text-4xl md:text-5xl font-bold text-purple-600 mb-2">
+                200+
+              </div>
+              <div class="text-gray-600 font-medium">Countries</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Popular Destinations -->
+      <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center mb-16">
+            <h2 class="text-5xl font-bold text-gray-900 mb-6">
+              Popular Destinations
+            </h2>
+            <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+              Discover amazing places around the world with our handpicked
+              destinations
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div
+              class="group cursor-pointer transform hover:scale-105 transition-all duration-500"
+            >
+              <div
+                class="relative overflow-hidden rounded-3xl shadow-xl hover:shadow-2xl transition-shadow duration-500"
+              >
+                <img
+                  src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=3840&h=2160&fit=crop&crop=center&auto=format&q=90"
+                  alt="Dubai"
+                  class="w-full h-72 object-cover group-hover:scale-110 transition-transform duration-700"
+                />
+                <div
+                  class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"
+                ></div>
+                <div class="absolute top-4 right-4">
+                  <div
+                    class="bg-white/20 backdrop-blur-md rounded-full px-3 py-1 flex items-center gap-1"
+                  >
+                    <svg
+                      class="h-4 w-4 text-yellow-400 fill-current"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                      ></path>
+                    </svg>
+                    <span class="text-white text-sm font-medium">4.8</span>
+                  </div>
+                </div>
+                <div class="absolute bottom-4 left-4 right-4 text-white">
+                  <h3 class="text-2xl font-bold mb-1">Dubai</h3>
+                  <p class="text-sm opacity-90 mb-2">UAE • City of Gold</p>
+                  <div class="flex justify-between items-end">
+                    <p class="text-xl font-bold text-orange-400">
+                      Starting ₹25,999
+                    </p>
+                    <button
+                      class="bg-white/20 backdrop-blur-md px-4 py-2 rounded-full text-sm font-medium hover:bg-white/30 transition-colors"
+                    >
+                      Explore
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="group cursor-pointer transform hover:scale-105 transition-all duration-500"
+            >
+              <div
+                class="relative overflow-hidden rounded-3xl shadow-xl hover:shadow-2xl transition-shadow duration-500"
+              >
+                <img
+                  src="https://i.ibb.co/N2N6LVYt/slide2.jpg"
+                  alt="Paris"
+                  class="w-full h-72 object-cover group-hover:scale-110 transition-transform duration-700"
+                />
+                <div
+                  class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"
+                ></div>
+                <div class="absolute top-4 right-4">
+                  <div
+                    class="bg-white/20 backdrop-blur-md rounded-full px-3 py-1 flex items-center gap-1"
+                  >
+                    <svg
+                      class="h-4 w-4 text-yellow-400 fill-current"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                      ></path>
+                    </svg>
+                    <span class="text-white text-sm font-medium">4.9</span>
+                  </div>
+                </div>
+                <div class="absolute bottom-4 left-4 right-4 text-white">
+                  <h3 class="text-2xl font-bold mb-1">Paris</h3>
+                  <p class="text-sm opacity-90 mb-2">France • City of Love</p>
+                  <div class="flex justify-between items-end">
+                    <p class="text-xl font-bold text-orange-400">
+                      Starting ₹45,999
+                    </p>
+                    <button
+                      class="bg-white/20 backdrop-blur-md px-4 py-2 rounded-full text-sm font-medium hover:bg-white/30 transition-colors"
+                    >
+                      Explore
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="group cursor-pointer transform hover:scale-105 transition-all duration-500"
+            >
+              <div
+                class="relative overflow-hidden rounded-3xl shadow-xl hover:shadow-2xl transition-shadow duration-500"
+              >
+                <img
+                  src="https://images.unsplash.com/photo-1573843981267-be1999ff37cd?w=3840&h=2160&fit=crop&crop=center&auto=format&q=90"
+                  alt="Maldives"
+                  class="w-full h-72 object-cover group-hover:scale-110 transition-transform duration-700"
+                />
+                <div
+                  class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"
+                ></div>
+                <div class="absolute top-4 right-4">
+                  <div
+                    class="bg-white/20 backdrop-blur-md rounded-full px-3 py-1 flex items-center gap-1"
+                  >
+                    <svg
+                      class="h-4 w-4 text-yellow-400 fill-current"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                      ></path>
+                    </svg>
+                    <span class="text-white text-sm font-medium">4.9</span>
+                  </div>
+                </div>
+                <div class="absolute bottom-4 left-4 right-4 text-white">
+                  <h3 class="text-2xl font-bold mb-1">Maldives</h3>
+                  <p class="text-sm opacity-90 mb-2">
+                    Maldives • Paradise Islands
+                  </p>
+                  <div class="flex justify-between items-end">
+                    <p class="text-xl font-bold text-orange-400">
+                      Starting ₹35,999
+                    </p>
+                    <button
+                      class="bg-white/20 backdrop-blur-md px-4 py-2 rounded-full text-sm font-medium hover:bg-white/30 transition-colors"
+                    >
+                      Explore
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="group cursor-pointer transform hover:scale-105 transition-all duration-500"
+            >
+              <div
+                class="relative overflow-hidden rounded-3xl shadow-xl hover:shadow-2xl transition-shadow duration-500"
+              >
+                <img
+                  src="https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=3840&h=2160&fit=crop&crop=center&auto=format&q=90"
+                  alt="Singapore"
+                  class="w-full h-72 object-cover group-hover:scale-110 transition-transform duration-700"
+                />
+                <div
+                  class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"
+                ></div>
+                <div class="absolute top-4 right-4">
+                  <div
+                    class="bg-white/20 backdrop-blur-md rounded-full px-3 py-1 flex items-center gap-1"
+                  >
+                    <svg
+                      class="h-4 w-4 text-yellow-400 fill-current"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                      ></path>
+                    </svg>
+                    <span class="text-white text-sm font-medium">4.7</span>
+                  </div>
+                </div>
+                <div class="absolute bottom-4 left-4 right-4 text-white">
+                  <h3 class="text-2xl font-bold mb-1">Singapore</h3>
+                  <p class="text-sm opacity-90 mb-2">Singapore • Lion City</p>
+                  <div class="flex justify-between items-end">
+                    <p class="text-xl font-bold text-orange-400">
+                      Starting ₹28,999
+                    </p>
+                    <button
+                      class="bg-white/20 backdrop-blur-md px-4 py-2 rounded-full text-sm font-medium hover:bg-white/30 transition-colors"
+                    >
+                      Explore
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Prepare your Bag Section -->
+      <section class="py-8 px-4 text-white text-center">
+        <h2 class="text-black text-5xl sm:text-5xl font-bold mb-6">
+          Prepare <span class="text-red-500">your</span> Bag
+        </h2>
+
+        <!-- Slider Container -->
+        <div class="relative overflow-hidden">
+          <div
+            id="slider"
+            class="flex transition-transform duration-700 ease-in-out"
+          >
+            <!-- Slide 1 -->
+            <div
+              class="min-w-full h-[500px] sm:h-[600px] bg-cover bg-center flex items-center justify-end px-10 relative"
+              style="
+                background-image: linear-gradient(
+                    rgba(51, 51, 51, 0.4),
+                    rgba(0, 0, 0, 0.6)
+                  ),
+                  url('https://i.ibb.co/JFzjVZ2n/slide1.jpg');
+              "
+            >
+              <div class="text-right max-w-md z-10 space-y-4 leading-loose">
+                <h3 class="text-5xl font-bold">Rome, Italy</h3>
+                <p>Walk through history at the Colosseum.</p>
+                <p class="text-lg font-semibold">Budget: ₹97,000</p>
+                <button
+                  class="backdrop-blur-md bg-white/10 hover:bg-white/20 border border-white text-white px-6 py-2 rounded transition"
+                >
+                  Book Now
+                </button>
+              </div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div
+              class="min-w-full h-[500px] sm:h-[600px] bg-cover bg-center flex items-center justify-end px-10 relative"
+              style="
+                background-image: linear-gradient(
+                    rgba(0, 0, 0, 0.4),
+                    rgba(0, 0, 0, 0.4)
+                  ),
+                  url('https://i.ibb.co/N2N6LVYt/slide2.jpg');
+              "
+            >
+              <div class="text-right max-w-md z-10 space-y-4 leading-loose">
+                <h3 class="text-5xl font-bold">Paris, France</h3>
+                <p>Whisper love under the Eiffel Tower.</p>
+                <p class="text-lg font-semibold">Budget: ₹70,000</p>
+                <button
+                  class="backdrop-blur-md bg-white/10 hover:bg-white/20 border border-white text-white px-6 py-2 rounded transition"
+                >
+                  Book Now
+                </button>
+              </div>
+            </div>
+
+            <!-- Slide 3 -->
+            <div
+              class="min-w-full h-[500px] sm:h-[600px] bg-cover bg-center flex items-center justify-end px-10 relative"
+              style="
+                background-image: linear-gradient(
+                    rgba(0, 0, 0, 0.4),
+                    rgba(0, 0, 0, 0.4)
+                  ),
+                  url('https://i.ibb.co/CK4cGwcJ/slide3.jpg');
+              "
+            >
+              <div class="text-right max-w-md z-10 space-y-4 leading-loose">
+                <h3 class="text-5xl font-bold">Maldives</h3>
+                <p>Relax on the pristine beaches.</p>
+                <p class="text-lg font-semibold">Budget: ₹45,000</p>
+                <button
+                  class="backdrop-blur-md bg-white/10 hover:bg-white/20 border border-white text-white px-6 py-2 rounded transition"
+                >
+                  Book Now
+                </button>
+              </div>
+            </div>
+
+            <!-- Slide 4 -->
+            <div
+              class="min-w-full h-[500px] sm:h-[600px] bg-cover bg-center flex items-center justify-end px-10 relative"
+              style="
+                background-image: linear-gradient(
+                    rgba(0, 0, 0, 0.4),
+                    rgba(0, 0, 0, 0.4)
+                  ),
+                  url('https://i.ibb.co/yFjW4B7c/slide4.jpg');
+              "
+            >
+              <div class="text-right max-w-md z-10 space-y-4 leading-loose">
+                <h3 class="text-5xl font-bold">Suzhou, China</h3>
+                <p>Explore the ancient city of Suzhou.</p>
+                <p class="text-lg font-semibold">Budget: ₹1,05,000</p>
+                <button
+                  class="backdrop-blur-md bg-white/10 hover:bg-white/20 border border-white text-white px-6 py-2 rounded transition"
+                >
+                  Book Now
+                </button>
+              </div>
+            </div>
+
+            <!-- Slide 5 -->
+            <div
+              class="min-w-full h-[500px] sm:h-[600px] bg-cover bg-center flex items-center justify-end px-10 relative"
+              style="
+                background-image: linear-gradient(
+                    rgba(0, 0, 0, 0.4),
+                    rgba(0, 0, 0, 0.4)
+                  ),
+                  url('https://i.ibb.co/zH5dXKH5/slide5.jpg');
+              "
+            >
+              <div class="text-right max-w-md z-10 space-y-4 leading-loose">
+                <h3 class="text-5xl font-bold">Tokyo, Japan</h3>
+                <p>City of lights and tradition.</p>
+                <p class="text-lg font-semibold">Budget: ₹95,000</p>
+                <button
+                  class="backdrop-blur-md bg-white/10 hover:bg-white/20 border border-white text-white px-6 py-2 rounded transition"
+                >
+                  Book Now
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Navigation Dots -->
+          <div class="flex justify-center mt-6 space-x-7">
+            <button
+              class="w-12 h-1 bg-black hover:white transition-all duration-300 rounded-full"
+              onclick="goToSlide(0)"
+            ></button>
+            <button
+              class="w-12 h-1 bg-black hover:bg-white transition-all duration-300 rounded-full"
+              onclick="goToSlide(1)"
+            ></button>
+            <button
+              class="w-12 h-1 bg-black hover:bg-white transition-all duration-300 rounded-full"
+              onclick="goToSlide(2)"
+            ></button>
+            <button
+              class="w-12 h-1 bg-black hover:bg-white transition-all duration-300 rounded-full"
+              onclick="goToSlide(3)"
+            ></button>
+            <button
+              class="w-12 h-1 bg-black hover:bg-white transition-all duration-300 rounded-full"
+              onclick="goToSlide(4)"
+            ></button>
+          </div>
+        </div>
+      </section>
+      <!--prepare-->
+      <script>
+        let currentSlide = 0;
+        const slider = document.getElementById("slider");
+        const totalSlides = slider.children.length;
+
+        function goToSlide(index) {
+          currentSlide = index;
+          slider.style.transform = `translateX(-${index * 100}%)`;
+        }
+
+        setInterval(() => {
+          currentSlide = (currentSlide + 1) % totalSlides;
+          goToSlide(currentSlide);
+        }, 7000);
+      </script>
+
+      <!-- Photo Gallery -->
+      <section
+        class="py-20 bg-gradient-to-br from-gray-900 via-gray-800 to-black"
+      >
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center mb-16">
+            <h2 class="text-5xl font-bold text-white mb-6">Travel Gallery</h2>
+            <p class="text-xl text-gray-300 max-w-2xl mx-auto">
+              Explore breathtaking moments from around the world captured by our
+              travelers
+            </p>
+          </div>
+
+          <div
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8"
+          >
+            <!-- Large featured image -->
+            <div
+              class="lg:col-span-2 lg:row-span-2 group relative overflow-hidden rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-500"
+            >
+              <img
+                src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=3840&h=2160&fit=crop&auto=format&q=90"
+                alt="Mountain landscape"
+                class="w-full h-96 lg:h-full object-cover group-hover:scale-110 transition-transform duration-700"
+              />
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              ></div>
+              <div
+                class="absolute bottom-6 left-6 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              >
+                <h3 class="text-2xl font-bold mb-2">Swiss Alps Adventure</h3>
+                <p class="text-lg opacity-90">
+                  Breathtaking mountain peaks and pristine valleys
+                </p>
+              </div>
+            </div>
+
+            <!-- Gallery items -->
+            <div
+              class="group relative overflow-hidden rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500"
+            >
+              <img
+                src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1920&h=1080&fit=crop&auto=format&q=90"
+                alt="Tropical beach"
+                class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-700"
+              />
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              ></div>
+              <div
+                class="absolute bottom-4 left-4 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              >
+                <h4 class="text-lg font-bold">Tropical Paradise</h4>
+                <p class="text-sm opacity-90">Crystal clear waters</p>
+              </div>
+            </div>
+
+            <div
+              class="group relative overflow-hidden rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500"
+            >
+              <img
+                src="https://images.unsplash.com/photo-1543716091-a840c05249ec?w=1920&h=1080&fit=crop&auto=format&q=90"
+                alt="Cherry blossoms Japan"
+                class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-700"
+              />
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              ></div>
+              <div
+                class="absolute bottom-4 left-4 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              >
+                <h4 class="text-lg font-bold">Cherry Blossoms</h4>
+                <p class="text-sm opacity-90">Spring in Japan</p>
+              </div>
+            </div>
+
+            <div
+              class="group relative overflow-hidden rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500"
+            >
+              <img
+                src="https://i.ibb.co/20NFyNQs/northen.jpg"
+                alt="Northern Lights"
+                class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-700"
+              />
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              ></div>
+              <div
+                class="absolute bottom-4 left-4 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              >
+                <h4 class="text-lg font-bold">Northern Lights</h4>
+                <p class="text-sm opacity-90">Arctic wonder</p>
+              </div>
+            </div>
+
+            <div
+              class="group relative overflow-hidden rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500"
+            >
+              <img
+                src="https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=1920&h=1080&fit=crop&auto=format&q=90"
+                alt="Santorini sunset"
+                class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-700"
+              />
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              ></div>
+              <div
+                class="absolute bottom-4 left-4 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              >
+                <h4 class="text-lg font-bold">Santorini Sunset</h4>
+                <p class="text-sm opacity-90">Greek islands</p>
+              </div>
+            </div>
+
+            <div
+              class="group relative overflow-hidden rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500"
+            >
+              <img
+                src="https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=1920&h=1080&fit=crop&auto=format&q=90"
+                alt="Machu Picchu"
+                class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-700"
+              />
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              ></div>
+              <div
+                class="absolute bottom-4 left-4 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              >
+                <h4 class="text-lg font-bold">Machu Picchu</h4>
+                <p class="text-sm opacity-90">Ancient wonder</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div
+              class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
+            >
+              <img
+                src="https://images.unsplash.com/photo-1528543606781-2f6e6857f318?w=1920&h=1080&fit=crop&auto=format&q=90"
+                alt="African safari"
+                class="w-full h-32 object-cover group-hover:scale-105 transition-transform duration-300"
+              />
+              <div
+                class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-300"
+              ></div>
+              <div class="absolute inset-0 flex items-center justify-center">
+                <h5
+                  class="text-white font-bold text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                >
+                  African Safari
+                </h5>
+              </div>
+            </div>
+
+            <div
+              class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
+            >
+              <img
+                src="https://i.ibb.co/XxqWfvRW/amazon.jpg"
+                alt="Amazon rainforest"
+                class="w-full h-32 object-cover group-hover:scale-105 transition-transform duration-300"
+              />
+              <div
+                class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-300"
+              ></div>
+              <div class="absolute inset-0 flex items-center justify-center">
+                <h5
+                  class="text-white font-bold text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                >
+                  Amazon Forest
+                </h5>
+              </div>
+            </div>
+
+            <div
+              class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
+            >
+              <img
+                src="https://images.unsplash.com/photo-1506197603052-3cc9c3a201bd?w=1920&h=1080&fit=crop&auto=format&q=90"
+                alt="Iceland landscape"
+                class="w-full h-32 object-cover group-hover:scale-105 transition-transform duration-300"
+              />
+              <div
+                class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-300"
+              ></div>
+              <div class="absolute inset-0 flex items-center justify-center">
+                <h5
+                  class="text-white font-bold text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                >
+                  Iceland
+                </h5>
+              </div>
+            </div>
+
+            <div
+              class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
+            >
+              <img
+                src="https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=1920&h=1080&fit=crop&auto=format&q=90"
+                alt="Rome architecture"
+                class="w-full h-32 object-cover group-hover:scale-105 transition-transform duration-300"
+              />
+              <div
+                class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-300"
+              ></div>
+              <div class="absolute inset-0 flex items-center justify-center">
+                <h5
+                  class="text-white font-bold text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                >
+                  Ancient Rome
+                </h5>
+              </div>
+            </div>
+          </div>
+
+          <div class="text-center mt-12">
+            <button
+              class="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-4 px-8 rounded-xl transition-all transform hover:scale-105 flex items-center justify-center gap-3 mx-auto shadow-lg"
+            >
+              <svg
+                class="h-6 w-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+                ></path>
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
+                ></path>
+              </svg>
+              View More Photos
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Newsletter -->
+      <section class="py-20 bg-gradient-to-br from-orange-50 to-red-50">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div class="bg-white rounded-3xl p-12 shadow-2xl">
+            <svg
+              class="h-16 w-16 text-orange-500 mx-auto mb-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              ></path>
+            </svg>
+            <h2 class="text-5xl font-bold text-gray-900 mb-6">
+              Stay Updated with Tripzy
+            </h2>
+            <p class="text-xl text-gray-600 mb-8">
+              Get exclusive travel deals, destination guides, and insider tips
+              delivered to your inbox
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
+              <input
+                type="email"
+                placeholder="Enter your email address"
+                class="flex-1 px-6 py-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent text-lg"
+              />
+              <button
+                class="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-4 px-8 rounded-xl transition-all transform hover:scale-105 flex items-center justify-center gap-2"
+              >
+                Subscribe
+                <svg
+                  class="h-5 w-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                  ></path>
+                </svg>
+              </button>
+            </div>
+
+            <p class="text-sm text-gray-500 mt-4">
+              Join 100K+ travelers who trust Tripzy for the best deals
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Our Services Section -->
+      <section class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <!-- Section Title -->
+          <h2
+            class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-12"
+          >
+            Our <span class="text-red-600">Services</span>
+          </h2>
+
+          <!-- Services Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Flight Booking Card -->
+            <div
+              class="service-card bg-white rounded-lg overflow-hidden shadow-lg"
+            >
+              <div class="overflow-hidden">
+                <img
+                  src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                  alt="Flight Booking Service"
+                  class="service-image w-full h-64 object-cover"
+                />
+              </div>
+              <div class="p-6 text-center">
+                <h3 class="text-xl font-bold text-gray-900 mb-3">
+                  Flight Booking
+                </h3>
+              </div>
+            </div>
+
+            <!-- Hotel Reservation Card -->
+            <div
+              class="service-card bg-white rounded-lg overflow-hidden shadow-lg"
+            >
+              <div class="overflow-hidden">
+                <img
+                  src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                  alt="Hotel Reservation Service"
+                  class="service-image w-full h-64 object-cover"
+                />
+              </div>
+              <div class="p-6 text-center">
+                <h3 class="text-xl font-bold text-gray-900 mb-3">
+                  Hotel Reservation
+                </h3>
+              </div>
+            </div>
+
+            <!-- Travel Insurance Card -->
+            <div
+              class="service-card bg-white rounded-lg overflow-hidden shadow-lg"
+            >
+              <div class="overflow-hidden">
+                <img
+                  src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                  alt="Travel Insurance Service"
+                  class="service-image w-full h-64 object-cover"
+                />
+              </div>
+              <div class="p-6 text-center">
+                <h3 class="text-xl font-bold text-gray-900 mb-3">
+                  Travel Insurance
+                </h3>
+              </div>
+            </div>
+          </div>
+
+          <!-- View Other Services Link -->
+          <div class="text-center mt-12">
+            <button
+              id="view-services-btn"
+              class="text-gray-900 hover:text-blue-600 font-medium text-lg underline decoration-2 underline-offset-4 transition-colors duration-200"
+            >
+              View Other Services
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="bg-gradient-to-br from-gray-900 to-black text-white py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+            <div>
+              <div
+                class="text-3xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400"
+              >
+                Tripzy
+              </div>
+              <p class="text-gray-400 mb-6 leading-relaxed">
+                Your trusted travel partner for amazing journeys and
+                unforgettable experiences across the globe.
+              </p>
+              <div class="flex space-x-4">
+                <div
+                  class="bg-white/10 rounded-full p-3 hover:bg-white/20 transition-colors cursor-pointer"
+                >
+                  <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path
+                      d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"
+                    />
+                  </svg>
+                </div>
+                <div
+                  class="bg-white/10 rounded-full p-3 hover:bg-white/20 transition-colors cursor-pointer"
+                >
+                  <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path
+                      d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98 8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z"
+                    />
+                  </svg>
+                </div>
+                <div
+                  class="bg-white/10 rounded-full p-3 hover:bg-white/20 transition-colors cursor-pointer"
+                >
+                  <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path
+                      d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.347-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.758-1.378l-.749 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.624 0 11.99-5.367 11.99-11.99C24.007 5.367 18.641.001 12.017.001z"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3 class="text-xl font-semibold mb-6">Quick Links</h3>
+              <ul class="space-y-3 text-gray-400">
+                <li>
+                  <a
+                    href="#"
+                    class="hover:text-white transition-colors flex items-center gap-2"
+                  >
+                    <svg
+                      class="h-4 w-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                      ></path>
+                    </svg>
+                    Flights</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    class="hover:text-white transition-colors flex items-center gap-2"
+                  >
+                    <svg
+                      class="h-4 w-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                      ></path>
+                    </svg>
+                    Hotels</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    class="hover:text-white transition-colors flex items-center gap-2"
+                  >
+                    <svg
+                      class="h-4 w-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
+                      ></path>
+                    </svg>
+                    Holidays</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    class="hover:text-white transition-colors flex items-center gap-2"
+                  >
+                    <svg
+                      class="h-4 w-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
+                      ></path>
+                    </svg>
+                    Trains</a
+                  >
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 class="text-xl font-semibold mb-6">Support</h3>
+              <ul class="space-y-3 text-gray-400">
+                <li>
+                  <a href="#" class="hover:text-white transition-colors"
+                    >Help Center</a
+                  >
+                </li>
+                <li>
+                  <a href="#" class="hover:text-white transition-colors"
+                    >Contact Us</a
+                  >
+                </li>
+                <li>
+                  <a href="#" class="hover:text-white transition-colors"
+                    >Privacy Policy</a
+                  >
+                </li>
+                <li>
+                  <a href="#" class="hover:text-white transition-colors"
+                    >Terms of Service</a
+                  >
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 class="text-xl font-semibold mb-6">Contact Info</h3>
+              <ul class="space-y-3 text-gray-400">
+                <li class="flex items-center gap-3">
+                  <svg
+                    class="h-5 w-5 text-blue-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                    ></path>
+                  </svg>
+                  +91 9876543210
+                </li>
+                <li class="flex items-center gap-3">
+                  <svg
+                    class="h-5 w-5 text-blue-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                    ></path>
+                  </svg>
+                  support@tripzy.com
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="border-t border-gray-800 pt-8 text-center">
+            <p class="text-gray-400">
+              &copy; 2025 Tripzy. All rights reserved. Made with love for
+              travelers worldwide.
+            </p>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      // Global variables
+      let activeTab = "flights";
+      let scrollY = 0;
+
+      // Destinations data
+      const destinations = [
+        {
+          name: "Dubai",
+          image:
+            "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=3840&h=2160&fit=crop&crop=center&auto=format&q=90",
+          price: "₹25,999",
+          description: "City of Gold",
+          country: "UAE",
+          rating: 4.8,
+        },
+        {
+          name: "Paris",
+          image:
+            "https://images.unsplash.com/photo-1502602898536-47ad22581b52?w=3840&h=2160&fit=crop&crop=center&auto=format&q=90",
+          price: "₹45,999",
+          description: "City of Love",
+          country: "France",
+          rating: 4.9,
+        },
+        {
+          name: "Maldives",
+          image:
+            "https://images.unsplash.com/photo-1573843981267-be1999ff37cd?w=3840&h=2160&fit=crop&crop=center&auto=format&q=90",
+          price: "₹35,999",
+          description: "Paradise Islands",
+          country: "Maldives",
+          rating: 4.9,
+        },
+        {
+          name: "Singapore",
+          image:
+            "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=3840&h=2160&fit=crop&crop=center&auto=format&q=90",
+          price: "₹28,999",
+          description: "Lion City",
+          country: "Singapore",
+          rating: 4.7,
+        },
+        {
+          name: "Delhi",
+          image:
+            "https://images.unsplash.com/photo-1586899028174-e7098604235b?w=3840&h=2160&fit=crop&crop=center&auto=format&q=90",
+          price: "₹8,999",
+          description: "Capital of India",
+          country: "India",
+          rating: 4.5,
+        },
+        {
+          name: "Mumbai",
+          image:
+            "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=3840&h=2160&fit=crop&crop=center&auto=format&q=90",
+          price: "₹12,999",
+          description: "City of Dreams",
+          country: "India",
+          rating: 4.6,
+        },
+      ];
+
+      // Parallax effect
+      function handleScroll() {
+        scrollY = window.scrollY;
+        const heroBg = document.getElementById("hero-bg");
+        if (heroBg) {
+          heroBg.style.transform = `translateY(${scrollY * 0.5}px)`;
+        }
+      }
+
+      // Mobile menu toggle
+      function toggleMobileMenu() {
+        const mobileMenu = document.getElementById("mobile-menu");
+        const menuIcon = document.getElementById("menu-icon");
+        const closeIcon = document.getElementById("close-icon");
+
+        mobileMenu.classList.toggle("hidden");
+        menuIcon.classList.toggle("hidden");
+        closeIcon.classList.toggle("hidden");
+      }
+
+      // Tab switching
+      function setActiveTab(tab) {
+        activeTab = tab;
+
+        // Update tab buttons
+        const tabButtons = document.querySelectorAll(".tab-btn");
+        tabButtons.forEach((btn) => {
+          btn.className =
+            "tab-btn px-8 py-4 rounded-full font-medium transition-all flex items-center gap-2 bg-gray-50 text-gray-700 hover:bg-gray-100 hover:scale-105";
+        });
+
+        event.target.className =
+          "tab-btn px-8 py-4 rounded-full font-medium transition-all flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg transform scale-105";
+
+        // Show/hide tab content
+        const tabContents = document.querySelectorAll(".tab-content");
+        tabContents.forEach((content) => content.classList.add("hidden"));
+
+        document.getElementById(`${tab}-form`).classList.remove("hidden");
+      }
+
+      // Search functionality
+      function handleSearch(query) {
+        if (query.length > 2) {
+          const filteredResults = destinations.filter(
+            (dest) =>
+              dest.name.toLowerCase().includes(query.toLowerCase()) ||
+              dest.country.toLowerCase().includes(query.toLowerCase()) ||
+              dest.description.toLowerCase().includes(query.toLowerCase())
+          );
+
+          showSearchResults(filteredResults);
+        } else {
+          hideSearchResults();
+        }
+      }
+
+      function showSearchResults(results) {
+        const searchResultsDiv = document.getElementById("search-results");
+
+        if (results.length > 0) {
+          let html = "";
+          results.forEach((result) => {
+            html += `
+                        <div onclick="selectDestination('${result.name}')" class="p-4 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0 flex items-center gap-3">
+                            <img src="${result.image}" alt="${result.name}" class="w-12 h-12 rounded-lg object-cover">
+                            <div>
+                                <div class="font-semibold text-gray-900">${result.name}</div>
+                                <div class="text-sm text-gray-500">${result.country} • ${result.description}</div>
+                                <div class="text-sm text-orange-600 font-medium">${result.price}</div>
+                            </div>
+                        </div>
+                    `;
+          });
+
+          searchResultsDiv.innerHTML = html;
+          searchResultsDiv.classList.remove("hidden");
+        }
+      }
+
+      function hideSearchResults() {
+        document.getElementById("search-results").classList.add("hidden");
+      }
+
+      function selectDestination(name) {
+        document.getElementById("from-input").value = name;
+        hideSearchResults();
+      }
+
+      // Booking search
+      function handleBookingSearch() {
+        const bookingResults = document.getElementById("booking-results");
+        bookingResults.classList.remove("hidden");
+
+        // Show results based on active tab
+        const flightResults = document.getElementById("flight-results");
+        const hotelResults = document.getElementById("hotel-results");
+        const holidayResults = document.getElementById("holiday-results");
+
+        // Hide all results first
+        flightResults.classList.add("hidden");
+        hotelResults.classList.add("hidden");
+        holidayResults.classList.add("hidden");
+
+        // Show relevant results
+        if (activeTab === "flights") {
+          flightResults.classList.remove("hidden");
+        } else if (activeTab === "hotels") {
+          hotelResults.classList.remove("hidden");
+        } else if (activeTab === "holidays") {
+          holidayResults.classList.remove("hidden");
+        }
+
+        // Scroll to results
+        bookingResults.scrollIntoView({ behavior: "smooth" });
+      }
+
+      // External booking
+      function bookExternal(type) {
+        let url = "";
+        switch (type) {
+          case "flight":
+            url =
+              "https://www.makemytrip.com/flight/search?from=BOM&to=DEL&tripType=O&class=E&adults=1";
+            break;
+          case "hotel":
+            url = "https://www.makemytrip.com/hotels/";
+            break;
+          case "train":
+            url = "https://www.irctc.co.in/nget/train-search";
+            break;
+        }
+        window.open(url, "_blank");
+      }
+
+      // Holiday booking (internal)
+      function bookHoliday(packageId) {
+        alert(
+          `Booking Holiday Package ${packageId} within Tripzy! Redirecting to checkout...`
+        );
+      }
+
+      // Event listeners
+      window.addEventListener("scroll", handleScroll);
+
+      // Close search results when clicking outside
+      document.addEventListener("click", function (event) {
+        const searchResults = document.getElementById("search-results");
+        const fromInput = document.getElementById("from-input");
+
+        if (
+          !searchResults.contains(event.target) &&
+          event.target !== fromInput
+        ) {
+          hideSearchResults();
+        }
+      });
+
+      // Initialize
+      document.addEventListener("DOMContentLoaded", function () {
+        setActiveTab("flights");
+      });
+    </script>
+
+    <script>
+      // Service card click handlers
+      document.querySelectorAll(".service-card").forEach((card, index) => {
+        card.addEventListener("click", () => {
+          const services = [
+            "Flight Booking",
+            "Hotel Reservation",
+            "Travel Insurance",
+          ];
+          const serviceName = services[index];
+
+          // Add click effect
+          card.style.transform = "scale(0.98)";
+          setTimeout(() => {
+            card.style.transform = "";
+          }, 150);
+
+          // Show service details (you can customize this)
+          showServiceDetails(serviceName);
+        });
+
+        // Add cursor pointer
+        card.style.cursor = "pointer";
+      });
+
+      // View Other Services button handler
+      document
+        .getElementById("view-services-btn")
+        .addEventListener("click", () => {
+          // Add click effect
+          const btn = document.getElementById("view-services-btn");
+          btn.style.transform = "scale(0.95)";
+          setTimeout(() => {
+            btn.style.transform = "";
+          }, 150);
+
+          showAllServices();
+        });
+
+      // Function to show service details
+      function showServiceDetails(serviceName) {
+        const messages = {
+          "Flight Booking":
+            "Find and book the best flights to your dream destination with competitive prices and flexible options.",
+          "Hotel Reservation":
+            "Book comfortable accommodations for your perfect stay from budget hotels to luxury resorts.",
+          "Travel Insurance":
+            "Protect your journey with comprehensive travel coverage for peace of mind during your trips.",
+        };
+
+        // Create modal or notification
+        showNotification(`${serviceName}: ${messages[serviceName]}`);
+      }
+
+      // Function to show all services
+      function showAllServices() {
+        const additionalServices = [
+          "Car Rental",
+          "Tour Packages",
+          "Visa Assistance",
+          "Currency Exchange",
+          "Travel Guides",
+          "Airport Transfers",
+        ];
+
+        showNotification(
+          `Additional Services Available:\n• ${additionalServices.join("\n• ")}`
+        );
+      }
+
+      // Notification system
+      function showNotification(message) {
+        // Remove existing notification
+        const existing = document.getElementById("notification");
+        if (existing) {
+          existing.remove();
+        }
+
+        // Create notification
+        const notification = document.createElement("div");
+        notification.id = "notification";
+        notification.className =
+          "fixed top-4 right-4 z-50 bg-white border border-gray-200 rounded-lg shadow-xl p-6 max-w-md transform translate-x-full transition-transform duration-300";
+        notification.innerHTML = `
+                  <div class="flex justify-between items-start">
+                      <div class="pr-4">
+                          <h4 class="font-semibold text-gray-900 mb-2">Service Information</h4>
+                          <p class="text-gray-600 text-sm whitespace-pre-line">${message}</p>
+                      </div>
+                      <button onclick="closeNotification()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                              <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                          </svg>
+                      </button>
+                  </div>
+              `;
+
+        document.body.appendChild(notification);
+
+        // Show notification
+        setTimeout(() => {
+          notification.style.transform = "translateX(0)";
+        }, 100);
+
+        // Auto hide after 5 seconds
+        setTimeout(() => {
+          closeNotification();
+        }, 5000);
+      }
+
+      // Close notification function
+      function closeNotification() {
+        const notification = document.getElementById("notification");
+        if (notification) {
+          notification.style.transform = "translateX(full)";
+          setTimeout(() => {
+            notification.remove();
+          }, 300);
+        }
+      }
+
+      // Add hover effects with JavaScript for better control
+      document.querySelectorAll(".service-card").forEach((card) => {
+        card.addEventListener("mouseenter", () => {
+          card.style.transform = "translateY(-8px)";
+          card.style.boxShadow = "0 25px 50px -12px rgba(0, 0, 0, 0.25)";
+        });
+
+        card.addEventListener("mouseleave", () => {
+          card.style.transform = "translateY(0)";
+          card.style.boxShadow = "0 10px 15px -3px rgba(0, 0, 0, 0.1)";
+        });
+      });
+
+      // Intersection Observer for scroll animations
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px",
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      // Observe service cards for animation
+      document.querySelectorAll(".service-card").forEach((card, index) => {
+        card.style.opacity = "0";
+        card.style.transform = "translateY(20px)";
+        card.style.transition = `opacity 0.6s ease ${
+          index * 0.1
+        }s, transform 0.6s ease ${index * 0.1}s`;
+        observer.observe(card);
+      });
+
+      // Initialize animations when page loads
+      window.addEventListener("load", () => {
+        // Trigger title animation
+        const title = document.querySelector("h2");
+        title.style.opacity = "0";
+        title.style.transform = "translateY(-20px)";
+        title.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+
+        setTimeout(() => {
+          title.style.opacity = "1";
+          title.style.transform = "translateY(0)";
+        }, 200);
+      });
+    </script>
+  </body>
+</html>
